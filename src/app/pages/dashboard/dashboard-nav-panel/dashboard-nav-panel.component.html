@@ -1,0 +1,89 @@
+<div class="bg">
+  <img src="{{bgUrl}}" alt="" class="bg-img">
+</div>
+<div class="nav-panel-content" (click)="hideSubMenus()">
+  <div class="logo"></div>
+  <div class="user-info-panel">
+    <div class="user-info">
+      <div class="user-info-name">欢迎您，管理员sama~</div>
+      <div class="user-info-theme">
+        <span (click)="showThemeModal()"><i class="anticon anticon-skin"></i> 主题</span>
+        <span class="division">|</span>
+        <i class="anticon anticon-logout"></i> 退出
+      </div>
+    </div>
+    <div class="user-avatar">
+      <nz-dropdown [nzTrigger]="'click'">
+        <img src="./assets/images/dashboard/admin.png" alt="" class="ant-dropdown-link" nz-dropdown>
+        <div nz-dropdown-custom class="nz-dropdown-custom">
+          <div class="nz-dropdown-avatar">
+            <img src="./assets/images/dashboard/admin.png">
+          </div>
+          <div class="nz-dropdown-list">
+            <div class="nz-dropdown-list-item">修改登录口令</div>
+            <div class="nz-dropdown-list-item">完善联系信息</div>
+            <div class="nz-dropdown-list-item">修改个人头像</div>
+            <div class="nz-dropdown-list-item">查看登录日志</div>
+          </div>
+        </div>
+        <!--<ul nz-menu>-->
+        <!--<li nz-menu-item class="nz-menu-item-avatar"><img src="/assets/images/dashboard/admin.png"></li>-->
+        <!--<li nz-menu-item>修改登录口令</li>-->
+        <!--<li nz-menu-divider></li>-->
+        <!--<li nz-menu-item>完善联系信息</li>-->
+        <!--<li nz-menu-divider></li>-->
+        <!--<li nz-menu-item>修改个人头像</li>-->
+        <!--<li nz-menu-divider></li>-->
+        <!--<li nz-menu-item>查看登录日志</li>-->
+        <!--</ul>-->
+      </nz-dropdown>
+    </div>
+  </div>
+
+  <div class="nav-panel">
+    <div class="banner">
+      <ul>
+        <li *ngFor="let widgets of widgetsArray;let index1 = index">
+          <div class="card-container">
+            <gridster [options]="gridsterOptions" [draggableOptions]="gridsterDraggableOptions"
+                      (reflow)="onReflow($event)" (optionsChange)="optionsChange($event)" #gridster1 class="card-panel">
+              <gridster-item *ngFor="let widget of widgets; let index2 = index" #itemComp
+                             [class.gridster-item-pointer]="!cardDragAndDrop" [options]="itemOptions"
+                             [dragAndDrop]="cardDragAndDrop" [resizable]="cardResizable"
+                             [(x)]="widget.x" [(y)]="widget.y"
+                             [(xSm)]="widget.xSm" [(ySm)]="widget.ySm"
+                             [(xMd)]="widget.xMd" [(yMd)]="widget.yMd"
+                             [(xLg)]="widget.xLg" [(yLg)]="widget.yLg"
+                             [(xXl)]="widget.xXl" [(yXl)]="widget.yXl"
+                             [(w)]="cardWidth" [(h)]="cardHeight"
+                             (change)="itemChange($event, gridster1)"
+                             (click)="jumpToSource(widget)">
+                <div class="panel-body">
+                  <img
+                    src="{{widget.imgUrl?widget.imgUrl.indexOf('./')!=0?devUrl+'systemapp/logo/'+widget.id:widget.imgUrl:'./assets/images/dashboard/card-icon/third.png'}}"
+                    alt="">
+                </div>
+                <div class="panel-heading" [class.panel-heading-draggable]="cardDragAndDrop">{{widget.title}}</div>
+                <div class="panel-heading-delete" *ngIf="cardDragAndDrop"
+                     (click)="deleteCard($event,index1,index2,gridster1)"></div>
+              </gridster-item>
+            </gridster>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<nz-modal [nzVisible]="themeModalVisible" [nzTitle]="modalTitle" [nzContent]="modalContent" [nzClosable]="false"
+          [nzWidth]="700" (nzOnCancel)="cancelChoose($event)"
+          (nzOnOk)="confirmChoose($event)">
+  <ng-template #modalTitle>
+    <span class="theme-title">换换背景你最出"色"</span>
+  </ng-template>
+  <ng-template #modalContent>
+    <img *ngFor="let img of themeImgList;let i = index" src="{{img.url}}" alt="" class="theme-img"
+         [class.img-select]="img.isSelect"
+         (click)="chooseBgImg(i)">
+  </ng-template>
+</nz-modal>

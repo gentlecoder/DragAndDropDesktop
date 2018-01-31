@@ -1,0 +1,35 @@
+<app-left-menu (selectedMenu)="changeMenu($event)" (enableCardDragAndDrop)="changeCardStatus($event)"
+               (dashboardNavPanel)="getDashboardNavPanel($event)" (widgetAddData)="addWidget($event)"
+               [navLock]="navLock" [hideSubMenu]="hideSubMenu" [regainSubMenu]="regainSubMenu">
+</app-left-menu>
+<app-dashboard-nav-panel *ngIf="!subVisible" [cardDragAndDrop]="cardDragAndDrop" [saveWidget]="saveWidget"
+                         [resetWidget]="resetWidget" [dashboardNavPanelData]="dashboardNavPanelData"
+                         [widgetAddData]="widgetAddData" (selectedMenu)="changeMenu($event)"
+                         (hideSubMenu)="hideSubMenus()" (regainSubMenu)="regainSubMenus()">
+</app-dashboard-nav-panel>
+<div class="metro-bottom-container" *ngIf="cardDragAndDrop">
+  <div class="metro-bottom-buttons">
+    <button nz-button [nzType]="'primary'" class="mr-20 resetButton" (click)="resetCardEdit()">
+      <span>重置</span>
+    </button>
+    <button nz-button [nzType]="'primary'" class="mr-20" (click)="saveCardEdit(true)">
+      <span>确定</span>
+    </button>
+    <!--todo 保存修改之前的状态 or 不向后台保存数据-->
+    <button nz-button [nzType]="'default'" (click)="saveCardEdit(false)">
+      <span>取消</span>
+    </button>
+  </div>
+  <div class="metro-bottom-company">中兴通讯科技股份有限责任公司<br>Copyright©2017</div>
+</div>
+<div *ngIf="subVisible">
+  <div class="left-breadcrumb">
+    <div class="btn-return" (click)="goBack()" title="返回"></div>
+    <!--<div class="btn-refresh" (click)="refresh()" title="刷新"></div>-->
+
+    <span class="left-breadcrumb-title" *ngIf="selectedMenu.appName!=null">{{selectedMenu.appName}}</span>
+  </div>
+  <div class="page-container left-page-container">
+    <router-outlet></router-outlet>
+  </div>
+</div>

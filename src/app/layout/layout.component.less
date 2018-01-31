@@ -1,0 +1,103 @@
+.page-container {
+  overflow: auto;
+  margin: 0px;
+  padding: 0px;
+  position: absolute;
+  //min-height: 500px;
+  width: 100%;
+}
+
+.left-page-container {
+  position: absolute;
+  left: 80px;
+  display: block;
+  width: calc(~"100% - 80px");
+  top: 50px;
+}
+
+.left-breadcrumb {
+  height: 50px;
+  background: #555;
+  width: calc(~"100% - 80px");
+  left: 80px;
+  position: absolute;
+}
+
+.left-breadcrumb-title {
+  width: auto;
+  height: 50px;
+  line-height: 50px;
+  text-align: left;
+  color: #F7F7F7;
+  font-size: 22px;
+  padding-left: 90px;
+}
+
+.btn-return {
+  width: 32px;
+  height: 32px;
+  top: 10px;
+  left: 8px;
+  position: absolute;
+  cursor: pointer;
+  background: url(../../assets/images/return.png);
+}
+
+.btn-refresh {
+  width: 32px;
+  height: 32px;
+  top: 10px;
+  left: 48px;
+  position: absolute;
+  cursor: pointer;
+  background: url(../../assets/images/refresh.png);
+}
+
+/*
+  底部菜单工具条
+ */
+.metro-bottom-container {
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: 50px;
+  background: url(../../assets/images/dashboard/dashboard-icon/bg-bottom-bar.png) repeat;
+  z-index: 1;
+}
+
+.metro-bottom-buttons {
+  text-align: center;
+  margin-top: 12px;
+  margin-left: 80px;
+}
+
+.resetButton {
+  background-color: #2ab07d;
+  border-color: #2ab07d;
+}
+
+.resetButton:hover {
+  background-color: #32cc92;
+  border-color: #32cc92;
+}
+
+.metro-bottom-company {
+  position: absolute;
+  top: 8px;
+  right: 0;
+  bottom: 0;
+  width: 40%;
+  height: 100%;
+  font-size: 12px;
+  text-align: center;
+  color: #FFFFF1;
+  z-index: -1;
+}
+
+/*
+  通用样式
+ */
+.mr-20 {
+  margin-right: 20px;
+}

@@ -1,0 +1,46 @@
+<div class="left-menu-container">
+  <div class="notification-container">
+    <div style="position: relative; ">
+      <!-- 通知中心 -->
+      <img class="notification-logo" src="./assets/images/logo-notification.png">
+      <span class="notification-count">3</span>
+    </div>
+  </div>
+  <ul class="left-menu">
+    <li *ngFor="let menu of menuItems;let i = index" class="left-menu-item" (click)="changeMenu(menu,i)"
+        [class.selected]="menu.select">
+      <a [routerLink]="menu.routerLink" routerLinkActive="active">
+        <img src="{{menu.typeIcon}}" class="menu-icon">
+        <span class="menu-title">{{menu.typeName}}</span>
+      </a>
+    </li>
+  </ul>
+  <div class="nav-lock-container" style="display: block;">
+    <img class="nav-lock" (click)="settingDesktop()" [src]="navLockUrl">
+  </div>
+</div>
+
+<div *ngIf="isVisible" class="submenu-container">
+  <i class="anticon anticon-close-circle close-btn" (click)="closeSub()"></i>
+  <div>
+    <span class="submenu-title">{{currentMenu.label}}</span>
+  </div>
+  <div class="item-container">
+    <div>
+      <nz-input [nzType]="'search'" [nzPlaceHolder]="'input search text'" [(ngModel)]="_searchValue"
+                style="width: 260px;"></nz-input>
+    </div>
+    <div class="submenu-items">
+      <hr class="hr-line">
+      <span class="metro-nav-func metro-nav-goto" *ngFor="let item of currentMenu.children">
+        <span class="name">
+          <a (click)="clickSub(item)">
+           {{item.appName}}
+          </a>
+        </span>
+        <span class="metro-nav-added" *ngIf="item.added"></span>
+        <span class="metro-nav-add" *ngIf="!item.added" (click)="addToDesktop(item)"></span>
+      </span>
+    </div>
+  </div>
+</div>
