@@ -1,6 +1,7 @@
 import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {LeftMenuService} from './left-menu.service';
+import ConstantsList from '../../app.config';
 
 declare const $: any;
 
@@ -14,6 +15,7 @@ export class LeftMenuComponent implements OnInit, OnChanges {
   // TODO 应用配置里面删除配置后刷新列表
   _searchValue: string;
   currentMenu: any;
+  currentMenuIndex: number;
   isVisible = false;
   navLockUrl = './assets/images/lock.png';
   dashboardNavPanelData;
@@ -74,16 +76,19 @@ export class LeftMenuComponent implements OnInit, OnChanges {
 
   getMenus() {
     this.leftMenuService.getMenuItems().subscribe(data => {
-      this.menuItems = data['data'];
+      this.menuItems = window.localStorage.getItem('menuItemsData') ?
+        JSON.parse(window.localStorage.getItem('menuItemsData')) : data['data'];
       this.menuItems.map(v => v.select = false);
     });
   }
 
   getDashboardNavPanel() {
     this.leftMenuService.getDashboardNavPanel().subscribe(data => {
-      this.dashboardNavPanelData = data['data'];
+      this.dashboardNavPanelData = window.localStorage.getItem('dashboardNavPanelData') ?
+        JSON.parse(window.localStorage.getItem('dashboardNavPanelData')) : data['data'];
       // 首次登陆，默认背景
-      this.dashboardNavPanelData.bgUrl = this.dashboardNavPanelData.bgUrl ? this.dashboardNavPanelData.bgUrl : './assets/images/dashboard/bg/bg_001_big.jpg';
+      this.dashboardNavPanelData.bgUrl = this.dashboardNavPanelData.bgUrl ?
+        this.dashboardNavPanelData.bgUrl : './assets/images/dashboard/bg/bg_001_big.jpg';
       this.dashboardNavPanel.emit(this.dashboardNavPanelData);
     });
   }
@@ -93,6 +98,7 @@ export class LeftMenuComponent implements OnInit, OnChanges {
       this.menuItems.map(v => v.select = false);
       this.menuItems[i].select = true;
       this.currentMenu = menu;
+      this.currentMenuIndex = i;
       this.isVisible = true;
     } else {
       this.clickSub(menu);
@@ -115,8 +121,11 @@ export class LeftMenuComponent implements OnInit, OnChanges {
     this.isVisible = false;
   }
 
-  addToDesktop(item: any) {
+  addToDesktop(item: any, index) {
     item.added = true;
+    // todo 新增后改变状态
+    ConstantsList.menuItemsData[this.currentMenuIndex].children[index].added = true;
+    window.localStorage.setItem('menuItemsData', JSON.stringify(ConstantsList.menuItemsData));
     const tmp = {};
     tmp['router'] = item.routerLink;
     tmp['url'] = item.appUrl;

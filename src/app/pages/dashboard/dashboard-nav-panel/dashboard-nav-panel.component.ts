@@ -33,9 +33,9 @@ export class DashboardNavPanelComponent implements OnInit, OnChanges {
     {url: './assets/images/dashboard/bg/bg_006_big.jpg', isSelect: false},
     {url: './assets/images/dashboard/bg/bg_007_big.jpg', isSelect: false},
     {url: './assets/images/dashboard/bg/bg_008_big.jpg', isSelect: false}];
-  selectThemeIndex: number = 0;
-  selectThemeIndexTmp: number = 0;
-  themeModalVisible: boolean = false;
+  selectThemeIndex = 0;
+  selectThemeIndexTmp = 0;
+  themeModalVisible = false;
   // slider实例
   slidey: any;
   slideyData: any;
@@ -51,7 +51,7 @@ export class DashboardNavPanelComponent implements OnInit, OnChanges {
   @Output() selectedMenu = new EventEmitter<any>();
   @Output() hideSubMenu = new EventEmitter<boolean>();
   @Output() regainSubMenu = new EventEmitter<boolean>();
-  cardResizable: boolean = false;
+  cardResizable = false;
   cardWidth = 1;
   cardHeight = 1;
   itemOptions = itemOptions;
@@ -61,7 +61,8 @@ export class DashboardNavPanelComponent implements OnInit, OnChanges {
   widgetsArray;
 
 
-  constructor(private  route: ActivatedRoute, private router: Router, private dashboardNavPanelService: DashboardNavPanelService,
+  constructor(private  route: ActivatedRoute, private router: Router,
+              private dashboardNavPanelService: DashboardNavPanelService,
               private _message: NzMessageService) {
   }
 
@@ -72,7 +73,7 @@ export class DashboardNavPanelComponent implements OnInit, OnChanges {
         this.userName = this.dashboardNavPanelData.userName;
         this.bgUrl = this.dashboardNavPanelData.bgUrl;
         console.log('widgetContent: ' + this.dashboardNavPanelData.widgetData);
-        if (typeof(this.dashboardNavPanelData.widgetData) == 'object') {
+        if (typeof(this.dashboardNavPanelData.widgetData) === 'object') {
           this.widgetsData = this.dashboardNavPanelData.widgetData;
         } else {
           this.widgetsData = this.dashboardNavPanelData.widgetData ? JSON.parse(this.dashboardNavPanelData.widgetData) : [];
@@ -84,7 +85,9 @@ export class DashboardNavPanelComponent implements OnInit, OnChanges {
       }
     }
     if (changes['resetWidget'] && !changes['resetWidget']['firstChange']) {
-      this.widgetsData = JSON.parse(this.dashboardNavPanelData.widgetData);
+      debugger;
+      this.widgetsData = typeof this.dashboardNavPanelData.widgetData === 'object' ? this.dashboardNavPanelData.widgetData :
+        JSON.parse(this.dashboardNavPanelData.widgetData);
       this.generateWidgetsData();
       this.reinitUnslider(true);
     }
@@ -145,7 +148,7 @@ export class DashboardNavPanelComponent implements OnInit, OnChanges {
   reinitUnslider(jumpOrNot: boolean) {
     $(function () {
       this.slideyData.calculateSlides();
-      if (this.slideyTotal != this.slideyData.total) {
+      if (this.slideyTotal !== this.slideyData.total) {
         $('nav.unslider-nav').remove();
         this.slideyData.initNav();
         this.slideyTotal = this.slideyData.total;
@@ -193,7 +196,7 @@ export class DashboardNavPanelComponent implements OnInit, OnChanges {
 
   jumpToSource(widget: object) {
     if (!this.cardDragAndDrop) {
-      if (widget['url'] != '') {
+      if (widget['url'] !== '') {
         this.router.navigate([widget['router'], widget['url']], {relativeTo: this.route});
       } else {
         this.router.navigate([widget['router']], {relativeTo: this.route});
@@ -230,7 +233,7 @@ export class DashboardNavPanelComponent implements OnInit, OnChanges {
   }
 
   chooseBgImg(index) {
-    this.themeImgList.forEach((e, i) => i == index ? e.isSelect = true : e.isSelect = false);
+    this.themeImgList.forEach((e, i) => i === index ? e.isSelect = true : e.isSelect = false);
     this.bgUrl = this.themeImgList[index].url;
     this.selectThemeIndexTmp = index;
   }

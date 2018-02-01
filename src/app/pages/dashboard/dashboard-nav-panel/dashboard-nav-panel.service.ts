@@ -10,6 +10,8 @@ export class DashboardNavPanelService {
   }
 
   saveWidget(body): Observable<object> {
+    // 保存的时候把数据存到缓存里面 做成与后台交互的效果
+    window.localStorage.setItem('dashboardNavPanelData', JSON.stringify(body));
     return this.http.post(dashboard_port.saveDashboardNavPanel, body);
   }
 }

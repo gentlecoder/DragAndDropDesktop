@@ -32,14 +32,14 @@
     </div>
     <div class="submenu-items">
       <hr class="hr-line">
-      <span class="metro-nav-func metro-nav-goto" *ngFor="let item of currentMenu.children">
+      <span class="metro-nav-func metro-nav-goto" *ngFor="let item of currentMenu.children;let i = index">
         <span class="name">
           <a (click)="clickSub(item)">
            {{item.appName}}
           </a>
         </span>
         <span class="metro-nav-added" *ngIf="item.added"></span>
-        <span class="metro-nav-add" *ngIf="!item.added" (click)="addToDesktop(item)"></span>
+        <span class="metro-nav-add" *ngIf="!item.added" (click)="addToDesktop(item,i)"></span>
       </span>
     </div>
   </div>
