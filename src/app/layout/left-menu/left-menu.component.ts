@@ -94,6 +94,7 @@ export class LeftMenuComponent implements OnInit, OnChanges {
   }
 
   changeMenu(menu: any, i) {
+    // todo 点击第二次的时候隐藏
     if (menu.children) {
       this.menuItems.map(v => v.select = false);
       this.menuItems[i].select = true;

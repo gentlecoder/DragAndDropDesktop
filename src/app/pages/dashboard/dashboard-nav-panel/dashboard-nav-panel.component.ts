@@ -60,6 +60,9 @@ export class DashboardNavPanelComponent implements OnInit, OnChanges {
   widgetsData;
   widgetsArray;
 
+  // 左侧菜单组件tmp
+  menuItemsDataTmp;
+
 
   constructor(private  route: ActivatedRoute, private router: Router,
               private dashboardNavPanelService: DashboardNavPanelService,
@@ -74,7 +77,9 @@ export class DashboardNavPanelComponent implements OnInit, OnChanges {
         this.bgUrl = this.dashboardNavPanelData.bgUrl;
         console.log('widgetContent: ' + this.dashboardNavPanelData.widgetData);
         if (typeof(this.dashboardNavPanelData.widgetData) === 'object') {
-          this.widgetsData = this.dashboardNavPanelData.widgetData;
+          this.widgetsData = [];
+          Object.assign(this.widgetsData, this.dashboardNavPanelData.widgetData);
+          // this.widgetsData = this.dashboardNavPanelData.widgetData;
         } else {
           this.widgetsData = this.dashboardNavPanelData.widgetData ? JSON.parse(this.dashboardNavPanelData.widgetData) : [];
         }
@@ -85,9 +90,14 @@ export class DashboardNavPanelComponent implements OnInit, OnChanges {
       }
     }
     if (changes['resetWidget'] && !changes['resetWidget']['firstChange']) {
-      debugger;
-      this.widgetsData = typeof this.dashboardNavPanelData.widgetData === 'object' ? this.dashboardNavPanelData.widgetData :
-        JSON.parse(this.dashboardNavPanelData.widgetData);
+      if (typeof this.dashboardNavPanelData.widgetData === 'object') {
+        Object.assign(this.widgetsData, this.dashboardNavPanelData.widgetData);
+      } else {
+        this.widgetsData = JSON.parse(this.dashboardNavPanelData.widgetData);
+      }
+      // this.widgetsData = typeof this.dashboardNavPanelData.widgetData === 'object' ? this.dashboardNavPanelData.widgetData :
+      //   JSON.parse(this.dashboardNavPanelData.widgetData);
+      this.reGeneratePosition();
       this.generateWidgetsData();
       this.reinitUnslider(true);
     }
@@ -109,6 +119,7 @@ export class DashboardNavPanelComponent implements OnInit, OnChanges {
     this.dashboardNavPanelData.widgetData = this.widgetsData;
     this.dashboardNavPanelService.saveWidget(this.dashboardNavPanelData).subscribe(data => {
       if (data['success']) {
+        this.menuItemsDataTmp && window.localStorage.setItem('menuItemsData', JSON.stringify(this.menuItemsDataTmp));
         this.regainSubMenu.emit();
         this._message.create('success', `保存成功！`);
       } else {
@@ -161,6 +172,22 @@ export class DashboardNavPanelComponent implements OnInit, OnChanges {
     });
   }
 
+  /**
+   * 删除位置信息，重新排版
+   */
+  reGeneratePosition() {
+    for (let i = 0; i < this.widgetsData.length; i++) {
+      delete this.widgetsData[i].xLg;
+      delete this.widgetsData[i].xMd;
+      delete this.widgetsData[i].xSm;
+      delete this.widgetsData[i].xXl;
+      delete this.widgetsData[i].yLg;
+      delete this.widgetsData[i].yMd;
+      delete this.widgetsData[i].ySm;
+      delete this.widgetsData[i].yXl;
+    }
+  }
+
   optionsChange(options: IGridsterOptions) {
     this.gridsterOptions = options;
     // console.log('options change:', options);
@@ -177,18 +204,19 @@ export class DashboardNavPanelComponent implements OnInit, OnChanges {
   deleteCard($event, index1: number, index2: number, gridster: GridsterComponent) {
     $event.preventDefault();
     // this.widgetsArray[index1].splice(index2, 1);
+    const deleteWidget = this.widgetsData[index1 * 10 + index2];
+    this.menuItemsDataTmp = JSON.parse(window.localStorage.getItem('menuItemsData'));
+    this.menuItemsDataTmp.map(v => v.children.map(e => {
+        if (e.appId === deleteWidget.id) {
+          e.added = false;
+          return e;
+        } else {
+          return e;
+        }
+      }
+    ));
     this.widgetsData.splice(index1 * 10 + index2, 1);
-    // 删除位置信息，重新排版
-    for (let i = 0; i < this.widgetsData.length; i++) {
-      delete this.widgetsData[i].xLg;
-      delete this.widgetsData[i].xMd;
-      delete this.widgetsData[i].xSm;
-      delete this.widgetsData[i].xXl;
-      delete this.widgetsData[i].yLg;
-      delete this.widgetsData[i].yMd;
-      delete this.widgetsData[i].ySm;
-      delete this.widgetsData[i].yXl;
-    }
+    this.reGeneratePosition();
     this.generateWidgetsData();
     this.reinitUnslider(false);
     // console.log('widget remove', index1, index2);
