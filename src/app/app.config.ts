@@ -122,7 +122,7 @@ const ConstantsList = {
           'appEnName': 'jpb',
           'appId': 13,
           'appLogo': './assets/images/dashboard/card-icon/third.png',
-          'appName': '第三方-天安容灾工具',
+          'appName': '第三方-容灾工具',
           'appType': 1,
           'appUrl': 'www.baidu.com',
           'operCode': 'operation.usp.test002',

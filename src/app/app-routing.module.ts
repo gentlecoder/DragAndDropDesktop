@@ -10,11 +10,11 @@ import {Routes, RouterModule} from '@angular/router';
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'layout',
+    redirectTo: 'user-desktop',
     pathMatch: 'full',
   },
   {
-    path: 'layout',
+    path: 'user-desktop',
     loadChildren: './layout/layout.module#LayoutModule'
   },
   // {
@@ -27,7 +27,7 @@ const routes: Routes = [
   imports: [
     RouterModule.forRoot(routes,
       {
-        useHash: true,
+        useHash: false,
         enableTracing: true
       }),
     // <-- debugging purposes only

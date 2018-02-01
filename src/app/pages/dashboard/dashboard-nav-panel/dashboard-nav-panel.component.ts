@@ -51,6 +51,7 @@ export class DashboardNavPanelComponent implements OnInit, OnChanges {
   @Output() selectedMenu = new EventEmitter<any>();
   @Output() hideSubMenu = new EventEmitter<boolean>();
   @Output() regainSubMenu = new EventEmitter<boolean>();
+  @Output() menuItemsDataTmp = new EventEmitter<any>();
   cardResizable = false;
   cardWidth = 1;
   cardHeight = 1;
@@ -59,9 +60,6 @@ export class DashboardNavPanelComponent implements OnInit, OnChanges {
   gridsterDraggableOptions: IGridsterDraggableOptions = gridsterDraggableOptions;
   widgetsData;
   widgetsArray;
-
-  // 左侧菜单组件tmp
-  menuItemsDataTmp;
 
 
   constructor(private  route: ActivatedRoute, private router: Router,
@@ -119,7 +117,7 @@ export class DashboardNavPanelComponent implements OnInit, OnChanges {
     this.dashboardNavPanelData.widgetData = this.widgetsData;
     this.dashboardNavPanelService.saveWidget(this.dashboardNavPanelData).subscribe(data => {
       if (data['success']) {
-        this.menuItemsDataTmp && window.localStorage.setItem('menuItemsData', JSON.stringify(this.menuItemsDataTmp));
+        // this.menuItemsDataTmp && window.localStorage.setItem('menuItemsData', JSON.stringify(this.menuItemsDataTmp));
         this.regainSubMenu.emit();
         this._message.create('success', `保存成功！`);
       } else {
@@ -205,8 +203,8 @@ export class DashboardNavPanelComponent implements OnInit, OnChanges {
     $event.preventDefault();
     // this.widgetsArray[index1].splice(index2, 1);
     const deleteWidget = this.widgetsData[index1 * 10 + index2];
-    this.menuItemsDataTmp = JSON.parse(window.localStorage.getItem('menuItemsData'));
-    this.menuItemsDataTmp.map(v => v.children.map(e => {
+    const menuTmp = JSON.parse(window.localStorage.getItem('menuItemsData'));
+    menuTmp.map(v => v.children.map(e => {
         if (e.appId === deleteWidget.id) {
           e.added = false;
           return e;
@@ -215,6 +213,7 @@ export class DashboardNavPanelComponent implements OnInit, OnChanges {
         }
       }
     ));
+    this.menuItemsDataTmp.emit(menuTmp);
     this.widgetsData.splice(index1 * 10 + index2, 1);
     this.reGeneratePosition();
     this.generateWidgetsData();

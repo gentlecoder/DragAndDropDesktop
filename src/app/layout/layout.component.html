@@ -5,7 +5,7 @@
 <app-dashboard-nav-panel *ngIf="!subVisible" [cardDragAndDrop]="cardDragAndDrop" [saveWidget]="saveWidget"
                          [resetWidget]="resetWidget" [dashboardNavPanelData]="dashboardNavPanelData"
                          [widgetAddData]="widgetAddData" (selectedMenu)="changeMenu($event)"
-                         (hideSubMenu)="hideSubMenus()" (regainSubMenu)="regainSubMenus()">
+                         (hideSubMenu)="hideSubMenus()" (regainSubMenu)="regainSubMenus()" (menuItemsDataTmp)="getMenuItemsDataTmp($event)">
 </app-dashboard-nav-panel>
 <div class="metro-bottom-container" *ngIf="cardDragAndDrop">
   <div class="metro-bottom-buttons">
@@ -20,7 +20,7 @@
       <span>取消</span>
     </button>
   </div>
-  <div class="metro-bottom-company">中兴通讯科技股份有限责任公司<br>Copyright©2017</div>
+  <div class="metro-bottom-company">gentlecoder<br>Copyright©2017</div>
 </div>
 <div *ngIf="subVisible">
   <div class="left-breadcrumb">

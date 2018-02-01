@@ -26,6 +26,8 @@ export class LayoutComponent implements OnInit {
   cardDragAndDrop: boolean;
   // 重新获取左侧菜单
   regainSubMenu: boolean;
+  // 拖拽编排时菜单的缓存
+  menuItemsDataTmp: any;
 
   constructor(private route: ActivatedRoute,
               private router: Router) {
@@ -67,6 +69,7 @@ export class LayoutComponent implements OnInit {
   saveCardEdit(saveFlag: boolean) {
     this.navLock = !this.navLock;
     this.cardDragAndDrop = false;
+    this.menuItemsDataTmp && window.localStorage.setItem('menuItemsData', JSON.stringify(this.menuItemsDataTmp));
     saveFlag && (this.saveWidget = !this.saveWidget);
   }
 
@@ -89,6 +92,14 @@ export class LayoutComponent implements OnInit {
    */
   regainSubMenus() {
     this.regainSubMenu = !this.regainSubMenu;
+  }
+
+  /**
+   * 获取菜单缓存
+   * @param menus
+   */
+  getMenuItemsDataTmp(menus) {
+    this.menuItemsDataTmp = menus;
   }
 
   goBack() {
