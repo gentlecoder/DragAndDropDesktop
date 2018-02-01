@@ -124,8 +124,10 @@ export class LeftMenuComponent implements OnInit, OnChanges {
   addToDesktop(item: any, index) {
     item.added = true;
     // todo 新增后改变状态
+    debugger;
     ConstantsList.menuItemsData[this.currentMenuIndex].children[index].added = true;
-    window.localStorage.setItem('menuItemsData', JSON.stringify(ConstantsList.menuItemsData));
+    this.menuItems[this.currentMenuIndex].children[index].added = true;
+    window.localStorage.setItem('menuItemsData', JSON.stringify(this.menuItems));
     const tmp = {};
     tmp['router'] = item.routerLink;
     tmp['url'] = item.appUrl;
