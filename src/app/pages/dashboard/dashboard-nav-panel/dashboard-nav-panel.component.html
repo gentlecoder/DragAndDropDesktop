@@ -76,8 +76,8 @@
 </div>
 
 <nz-modal [nzVisible]="themeModalVisible" [nzTitle]="modalTitle" [nzContent]="modalContent" [nzClosable]="false"
-          [nzWidth]="700" (nzOnCancel)="cancelChoose($event)"
-          (nzOnOk)="confirmChoose($event)">
+          [nzWidth]="700" (nzOnCancel)="cancelChoose()"
+          (nzOnOk)="confirmChoose()">
   <ng-template #modalTitle>
     <span class="theme-title">换换背景你最出"色"</span>
   </ng-template>

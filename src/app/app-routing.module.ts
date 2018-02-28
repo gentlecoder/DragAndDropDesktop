@@ -27,7 +27,7 @@ const routes: Routes = [
   imports: [
     RouterModule.forRoot(routes,
       {
-        useHash: false,
+        useHash: true,
         enableTracing: true
       }),
     // <-- debugging purposes only
